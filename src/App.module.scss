@@ -1,0 +1,72 @@
+@import "reset.scss";
+
+#root {
+  width: 100dvw;
+  min-height: 100dvh;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+body,
+html,
+#root {
+  min-height: 100dvh;
+  min-width: 100dvw;
+}
+
+body {
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  overflow-x: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: thin;
+}
+
+.main {
+  min-height: 100dvh;
+  min-width: 100dvw;
+  padding: 3rem;
+  background-color: black;
+  color: white;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 50px;
+}
+
+.reviews {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 100px;
+}
+
+.review {
+  max-width: 468px;
+  min-height: 611px;
+}
+
+.cart {
+  padding: 100px 0px 0px 0px;
+  min-width: 600px;
+  min-height: 230px;
+}
+
+.items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 50px;
+
+  & > div {
+    width: 301px;
+    max-height: 812px;
+  }
+}

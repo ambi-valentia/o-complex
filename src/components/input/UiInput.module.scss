@@ -1,0 +1,22 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  font-size: 14px;
+}
+
+.input {
+  background-color: white;
+  color: black;
+  width: 100%;
+  min-height: 40px;
+  padding: 0.8rem 2.8rem 0.8rem 1.2rem;
+  border-radius: 8px;
+  border: none;
+  box-shadow: 1px 1px 2px var(--light-grey-color);
+  &:hover,
+  &:focus {
+    outline: 2px solid #f3199f;
+  }
+}
