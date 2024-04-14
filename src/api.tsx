@@ -1,10 +1,21 @@
 import api from "./services/api.service";
-import { ReviewsResponse } from "./types/main";
+import { GoodsResponse, ReviewsResponse } from "./types/main";
 
 export enum Routes {
-    getReviews = 'reviews',
+  getReviews = "reviews",
+  order = "order",
+  getProducts = "products?",
 }
 
 export async function fetchReviews(): Promise<ReviewsResponse> {
-    return await api.get<ReviewsResponse>(Routes.getReviews);
-  }
+  return await api.get<ReviewsResponse>(Routes.getReviews);
+}
+
+export async function fetchGoods(
+  page: number,
+  pageSize: number
+): Promise<GoodsResponse> {
+  return await api.get<GoodsResponse>(
+    Routes.getProducts.concat(`page=${page}&page_size=${pageSize}`)
+  );
+}

@@ -51,7 +51,7 @@ class ApiService implements ApiServiceInterface {
       .catch((err) => err);
   }
 
-  post<T>(route: string, data: any, clearResponse?: boolean): Promise<T> {
+  post<T>(route: string, data: any): Promise<T> {
     const raw = JSON.stringify(data);
     const headers = new Headers();
 
@@ -66,7 +66,7 @@ class ApiService implements ApiServiceInterface {
     };
 
     return fetch(apiURL.concat(route), requestOptions as any)
-      .then((response) => (clearResponse && response) || response.json())
+      .then((response) => response.json())
       .then((data) => data as T)
       .catch((err) => err);
   }

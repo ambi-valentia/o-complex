@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { call, put, takeEvery, all } from "redux-saga/effects";
-import { getReviewsFailure, getReviewsSuccess } from "./reducers/main.slice";
-import { fetchReviews } from "../api";
+import { getGoodsFailure, getGoodsSuccess, getReviewsFailure, getReviewsSuccess } from "./reducers/main.slice";
+import { fetchGoods, fetchReviews } from "../api";
+import { PayloadAction } from "@reduxjs/toolkit";
+import { GoodsAction } from "../types/main";
 
 function* getReviewsFetch(): any {
   try {
@@ -12,11 +14,24 @@ function* getReviewsFetch(): any {
   }
 }
 
+function* getGoodsFetch(action: PayloadAction<GoodsAction>): any {
+  try {
+    const goods = yield call(fetchGoods, action.payload.page, action.payload.page_size);
+    yield put(getGoodsSuccess(goods.products));
+  } catch (e) {
+    yield put(getGoodsFailure(e));
+  }
+}
+
 function* reviewsWatcher() {
   yield takeEvery("main/getReviews", getReviewsFetch);
 }
 
+function* goodsWatcher() {
+  yield takeEvery("main/getGoods", getGoodsFetch);
+}
+
 
 export function* rootWatcher() {
-  yield all([reviewsWatcher()]);
+  yield all([reviewsWatcher(), goodsWatcher()]);
 }
