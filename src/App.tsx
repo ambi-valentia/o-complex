@@ -67,15 +67,20 @@ export function App() {
     }
   }, []);
 
-  const onAddToCart = (item: Good) => {
+  const onAddToCart = (item: Good, amount: number) => {
     const existingItemIndex = cart.findIndex(
       (cartItem) => cartItem.id === item.id
     );
 
+    if(amount === 0) {
+      const updatedCart=[...cart].splice(existingItemIndex, 1);
+      setCart(updatedCart);
+    }
+
     if (existingItemIndex !== -1) {
       const updatedCart = cart.map((cartItem, index) => {
         if (index === existingItemIndex) {
-          return { ...cartItem, amount: cartItem.amount + 1 };
+          return { ...cartItem, amount: amount===1 ? cartItem.amount + 1 : amount };
         }
         return cartItem;
       });
@@ -84,7 +89,7 @@ export function App() {
     } else {
       setCart([
         ...cart,
-        { id: item.id, name: item.title, price: item.price, amount: 1 },
+        { id: item.id, name: item.title, price: item.price, amount },
       ]);
     }
   };
@@ -99,7 +104,7 @@ export function App() {
 
       updatedCart[existingItemIndex].amount--;
 
-      if (updatedCart[existingItemIndex].amount === 0) {
+      if (updatedCart[existingItemIndex].amount <= 0 ) {
         updatedCart.splice(existingItemIndex, 1);
       }
 
@@ -199,7 +204,7 @@ export function App() {
                     cart.find((cartItem) => cartItem.name === item.title) ===
                     undefined
                       ? [
-                          <UiButton onClick={() => onAddToCart(item)}>
+                          <UiButton onClick={() => onAddToCart(item, 1)}>
                             Купить
                           </UiButton>,
                         ]
@@ -207,14 +212,15 @@ export function App() {
                           <UiButton onClick={() => onRemoveFromCart(item)}>
                             -
                           </UiButton>,
-                          <UiButton disabled>
-                            {
+                          <UiInput
+                            value={
                               cart.find(
                                 (cartItem) => cartItem.name === item.title
                               )?.amount
                             }
-                          </UiButton>,
-                          <UiButton onClick={() => onAddToCart(item)}>
+                            onChange={(e) => onAddToCart(item, Number(e.target.value))}
+                          />,
+                          <UiButton onClick={() => onAddToCart(item, 1)}>
                             +
                           </UiButton>,
                         ]
