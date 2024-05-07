@@ -4,14 +4,12 @@ import { useAppSelector } from "./hooks/redux";
 // import { getGoods, getReviews } from "./store/reducers/main.slice";
 import { UiInput, UiContainer, UiButton } from "./components";
 import {
-  CartItemRequest,
   Good,
-  OrderResponse,
   ShoppingItem,
 } from "./types/main";
 import InputMask from "react-input-mask";
-import api from "./services/api.service";
-import { Routes } from "./api";
+// import api from "./services/api.service";
+// import { Routes } from "./api";
 import image from "/vite.svg";
 
 const maxAmount = 999999;
