@@ -3,10 +3,7 @@ import classes from "./App.module.scss";
 import { useAppSelector } from "./hooks/redux";
 // import { getGoods, getReviews } from "./store/reducers/main.slice";
 import { UiInput, UiContainer, UiButton } from "./components";
-import {
-  Good,
-  ShoppingItem,
-} from "./types/main";
+import { Good, ShoppingItem } from "./types/main";
 import InputMask from "react-input-mask";
 // import api from "./services/api.service";
 // import { Routes } from "./api";
@@ -22,25 +19,19 @@ export function App() {
   const { goods, goodsLoading } = useAppSelector((state) => state.mainReducer);
 
   const [numberError, setNumberError] = useState<boolean>(false);
-  const [cart, setCart] = useState<ShoppingItem[]>([]);
-  const [number, setNumber] = useState<string>("");
 
   const savePhoneNumber = (number: string) => {
     localStorage.setItem("number", number);
-  };
-
-  const getPhoneNumber = () => {
-    return localStorage.getItem("number");
   };
 
   const saveCart = (cart: ShoppingItem[]) => {
     localStorage.setItem("cart", JSON.stringify(cart));
   };
 
-  const getCart = () => {
-    const cart = localStorage.getItem("cart");
-    return cart ? JSON.parse(cart) : [];
-  };
+  const locaStorageCart = JSON.parse(localStorage.getItem("cart") || "{}");
+  const locaStorageNumber = localStorage.getItem("number");
+  const [cart, setCart] = useState<ShoppingItem[]>(locaStorageCart || "" || []);
+  const [number, setNumber] = useState<string>(locaStorageNumber || "");
 
   useEffect(() => {
     savePhoneNumber(number);
@@ -55,18 +46,6 @@ export function App() {
   useEffect(() => {
     saveCart(cart);
   }, [cart]);
-
-  useEffect(() => {
-    const savedNumber = getPhoneNumber();
-    const savedCart = getCart();
-
-    if (savedNumber) {
-      setNumber(savedNumber);
-    }
-    if (savedCart) {
-      setCart(savedCart);
-    }
-  }, []);
 
   const onAddToCart = (item: Good, amount: number) => {
     const existingItemIndex = cart.findIndex(
