@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import classes from "./App.module.scss";
-import { useAppDispatch, useAppSelector } from "./hooks/redux";
-import { getGoods, getReviews } from "./store/reducers/main.slice";
+import { useAppSelector } from "./hooks/redux";
+// import { getGoods, getReviews } from "./store/reducers/main.slice";
 import { UiInput, UiContainer, UiButton } from "./components";
 import {
   CartItemRequest,
@@ -12,9 +12,12 @@ import {
 import InputMask from "react-input-mask";
 import api from "./services/api.service";
 import { Routes } from "./api";
+import image from "/vite.svg";
+
+const maxAmount = 999999;
 
 export function App() {
-  const dispatch = useAppDispatch();
+  //  const dispatch = useAppDispatch();
   const { reviews, reviewsLoading } = useAppSelector(
     (state) => state.mainReducer
   );
@@ -72,15 +75,18 @@ export function App() {
       (cartItem) => cartItem.id === item.id
     );
 
-    if(amount === 0) {
-      const updatedCart=[...cart].splice(existingItemIndex, 1);
+    if (amount === 0) {
+      const updatedCart = [...cart].splice(existingItemIndex, 1);
       setCart(updatedCart);
     }
 
     if (existingItemIndex !== -1) {
       const updatedCart = cart.map((cartItem, index) => {
         if (index === existingItemIndex) {
-          return { ...cartItem, amount: amount===1 ? cartItem.amount + 1 : amount };
+          return {
+            ...cartItem,
+            amount: amount === 1 ? cartItem.amount + 1 : amount,
+          };
         }
         return cartItem;
       });
@@ -104,7 +110,7 @@ export function App() {
 
       updatedCart[existingItemIndex].amount--;
 
-      if (updatedCart[existingItemIndex].amount <= 0 ) {
+      if (updatedCart[existingItemIndex].amount <= 0) {
         updatedCart.splice(existingItemIndex, 1);
       }
 
@@ -112,10 +118,10 @@ export function App() {
     }
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     dispatch(getReviews());
     dispatch(getGoods({ page: 1, page_size: 50 }));
-  }, [dispatch]);
+  }, [dispatch]); */
 
   const onOrder = async function () {
     if (number.indexOf("_") !== -1 || !number) {
@@ -123,7 +129,7 @@ export function App() {
     } else if (!cart.length) {
       alert("Корзина пуста");
     } else {
-      const cartRequest: CartItemRequest[] = cart.map((item) => ({
+      /* const cartRequest: CartItemRequest[] = cart.map((item) => ({
         id: item.id,
         quantity: item.amount,
       }));
@@ -139,7 +145,8 @@ export function App() {
       } catch (error) {
         console.error("Error while placing order:", error);
         alert("Ошибка при размещении заказа");
-      }
+      } */
+      alert("Заказ успешно размещен!");
     }
   };
 
@@ -180,19 +187,29 @@ export function App() {
           ) : (
             <>
               {cart.map((item) => (
-                <div className={classes.items}>
+                <div className={classes.cartItems}>
                   <span>{item.name}</span>
                   <span>x{item.amount}</span>
                   <span>{item.amount * item.price}</span>
                 </div>
               ))}
+              <div className={classes.cartItems}>
+                <span>Итого</span>
+                <span className={classes.cartTotal}>
+                  {cart.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + currentValue.price * currentValue.amount,
+                    0
+                  )}
+                </span>
+              </div>
             </>
           )}
         </UiContainer>
       </div>
       <div className={classes.items}>
         {goodsLoading && <>GOODS LOADING...</>}
-        {!goods.length ? (
+        {!goods?.length ? (
           <>No goods</>
         ) : (
           <>
@@ -201,7 +218,7 @@ export function App() {
               goods.map((item) => (
                 <UiContainer
                   bottomBar={
-                    cart.find((cartItem) => cartItem.name === item.title) ===
+                    cart.find((cartItem) => cartItem.id === item.id) ===
                     undefined
                       ? [
                           <UiButton onClick={() => onAddToCart(item, 1)}>
@@ -213,12 +230,20 @@ export function App() {
                             -
                           </UiButton>,
                           <UiInput
-                            value={
-                              cart.find(
-                                (cartItem) => cartItem.name === item.title
-                              )?.amount
+                            type="number"
+                            min={1}
+                            max={maxAmount}
+                            onKeyDown={(e) =>
+                              ["E", "e", "-", "+"].includes(e.key) &&
+                              e.preventDefault()
                             }
-                            onChange={(e) => onAddToCart(item, Number(e.target.value))}
+                            value={
+                              cart.find((cartItem) => cartItem.id === item.id)
+                                ?.amount
+                            }
+                            onChange={(e) =>
+                              onAddToCart(item, Number(e.target.value))
+                            }
                           />,
                           <UiButton onClick={() => onAddToCart(item, 1)}>
                             +
@@ -227,7 +252,7 @@ export function App() {
                   }
                 >
                   <div className={classes.product__info}>
-                    <img src={item.image_url} width="281px" />
+                    <img src={image} width="281px" />
                     <span className={classes.product__heading}>
                       {item.title}
                     </span>

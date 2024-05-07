@@ -1,5 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 import { Good, GoodsAction, Review } from "../../types/main";
+import { reviews } from "../../mocks/reviews.mock";
+import { goods } from "../../mocks/goods.mock";
 
 export interface MainState {
   reviews: Review[];
@@ -10,9 +12,9 @@ export interface MainState {
 }
 
 const initialState: MainState = {
-  reviews: [],
+  reviews: reviews,
   reviewsLoading: false,
-  goods: [],
+  goods: goods,
   goodsLoading: false,
   message: '',
 };

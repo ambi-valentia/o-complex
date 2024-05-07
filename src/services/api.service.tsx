@@ -8,7 +8,6 @@ interface Headers {
 
 interface ApiServiceInterface {
   get<T>(route: string, headers?: Headers): Promise<T>;
-  getNoAuth(route: string): Promise<any>;
 
   post<T>(
     route: string,
