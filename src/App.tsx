@@ -164,15 +164,15 @@ export function App() {
           {!cart.length ? (
             <>Нет добавленных товаров</>
           ) : (
-            <>
+            <div className={classes.cartItems}>
               {cart.map((item) => (
-                <div className={classes.cartItems}>
+                <div className={classes.cartItem}>
                   <span>{item.name}</span>
                   <span>x{item.amount}</span>
                   <span>{item.amount * item.price}</span>
                 </div>
               ))}
-              <div className={classes.cartItems}>
+              <div className={classes.cartItem}>
                 <span>Итого</span>
                 <span className={classes.cartTotal}>
                   {cart.reduce(
@@ -182,7 +182,7 @@ export function App() {
                   )}
                 </span>
               </div>
-            </>
+            </div>
           )}
         </UiContainer>
       </div>

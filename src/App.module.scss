@@ -75,7 +75,11 @@ body {
   }
 }
 
-.cartItems {
+.cartItems{
+  overflow-y: hidden;
+}
+
+.cartItem {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 50px;

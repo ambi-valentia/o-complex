@@ -2,6 +2,7 @@
   width: 100%;
   height: 100%;
   min-height: inherit;
+  max-height: inherit;
   border-radius: 16px;
   padding: 10px;
 
@@ -45,7 +46,7 @@
   gap: 15px;
 }
 
-@media screen and (max-width: 1024.98px) and (orientation: portrait) {
+@media screen and (max-width: 599.98px) and (orientation: portrait) {
   .content {
     overflow-y: hidden;
   }
