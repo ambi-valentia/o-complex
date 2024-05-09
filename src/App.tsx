@@ -28,10 +28,10 @@ export function App() {
     localStorage.setItem("cart", JSON.stringify(cart));
   };
 
-  const locaStorageCart = JSON.parse(localStorage.getItem("cart") || "{}");
-  const locaStorageNumber = localStorage.getItem("number");
-  const [cart, setCart] = useState<ShoppingItem[]>(locaStorageCart || "" || []);
-  const [number, setNumber] = useState<string>(locaStorageNumber || "");
+  const localStorageCart = JSON.parse(localStorage.getItem("cart") || 'null');
+  const localStorageNumber = localStorage.getItem("number");
+  const [cart, setCart] = useState<ShoppingItem[]>(localStorageCart || []);
+  const [number, setNumber] = useState<string>(localStorageNumber || "");
 
   useEffect(() => {
     savePhoneNumber(number);
@@ -123,6 +123,8 @@ export function App() {
         console.error("Error while placing order:", error);
         alert("Ошибка при размещении заказа");
       } */
+      setCart([]);
+      localStorage.removeItem('cart');
       alert("Заказ успешно размещен!");
     }
   };

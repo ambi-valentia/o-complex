@@ -44,3 +44,9 @@
   width: 100%;
   gap: 15px;
 }
+
+@media screen and (max-width: 1024.98px) and (orientation: portrait) {
+  .content {
+    overflow-y: hidden;
+  }
+}
