@@ -23,28 +23,30 @@ export interface OrderRequest {
 }
 
 export interface ShoppingItem {
-  id: number;
+  id: string;
   name: string;
   amount: number;
   price: number;
 }
 
 export interface Good {
-  id: number;
-  image_url?: string;
-  title: string;
-  description: string;
-  price: number;
+  asin: string;
+  product_photo?: string;
+  product_title: string;
+  description?: string;
+  product_price: string;
 }
 
 export interface GoodsAction {
   page: number;
-  page_size: number; 
 }
 
 export interface GoodsResponse {
-  page: number; 
-  amount: number;
-  total: number;
-  items: Good[];
+  status: string;
+  data: {
+    total_products: number;
+    country: string;
+    domain: string;
+    products: Good[];
+  };
 }

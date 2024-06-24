@@ -1,1 +1,1 @@
-export const apiURL = 'http://o-complex.com:1337/';
+export const apiURL = 'https://real-time-amazon-data.p.rapidapi.com/';

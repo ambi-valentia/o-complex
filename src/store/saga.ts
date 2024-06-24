@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { call, put, takeEvery, all } from "redux-saga/effects";
-import { getGoodsFailure, getGoodsSuccess, getReviewsFailure, getReviewsSuccess } from "./reducers/main.slice";
+import { getGoodsFailure, getGoodsSuccess, getReviewsFailure, getReviewsSuccess, setGoodsLoading } from "./reducers/main.slice";
 import { fetchGoods, fetchReviews } from "../api";
 import { PayloadAction } from "@reduxjs/toolkit";
 import { GoodsAction } from "../types/main";
@@ -15,9 +15,10 @@ function* getReviewsFetch(): any {
 }
 
 function* getGoodsFetch(action: PayloadAction<GoodsAction>): any {
+  yield put(setGoodsLoading());
   try {
-    const goods = yield call(fetchGoods, action.payload.page, action.payload.page_size);
-    yield put(getGoodsSuccess(goods.products));
+    const goods = yield call(fetchGoods, action.payload.page);
+    yield put(getGoodsSuccess(goods.data.products));
   } catch (e) {
     yield put(getGoodsFailure(e));
   }

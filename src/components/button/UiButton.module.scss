@@ -17,12 +17,12 @@
     sans-serif;
 
   &:hover {
-    outline: 2px solid #f3199f;
+    color: white;
+    background-color: #fe82c0;
   }
 
   &:active {
-    background-color: #fbd1f3;
-    outline: 2px solid #f3199f;
+    background-color: #f31986;
   }
   &:disabled {
     cursor: default;
@@ -30,4 +30,8 @@
     color: black;
     background-color: white;
   }
+}
+
+.button_light {
+  background-color: #fbd1f3;
 }

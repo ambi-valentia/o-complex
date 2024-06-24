@@ -3,7 +3,6 @@
   display: flex;
   align-items: center;
   width: 100%;
-  font-size: 14px;
 }
 
 .input {
@@ -17,8 +16,10 @@
   box-shadow: 1px 1px 2px var(--light-grey-color);
   &:hover,
   &:focus {
-    outline: 2px solid #f3199f;
+    border: 2px solid #f3199f;
+    outline: none;
   }
+  font-size: 14px;
   text-align: center;
 }
 
