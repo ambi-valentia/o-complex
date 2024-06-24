@@ -104,7 +104,7 @@ export function App() {
     if (number.indexOf("_") !== -1 || !number) {
       setNumberError(true);
     } else if (!cart.length) {
-      alert("Корзина пуста");
+      alert("Cart empty");
     } else {
       /* const cartRequest: CartItemRequest[] = cart.map((item) => ({
         id: item.id,
@@ -117,15 +117,15 @@ export function App() {
         });
         if (!response.success) {
           console.error(response.error);
-          alert("Ошибка при размещении заказа");
+          alert("Error while placing order");
         } else alert("Заказ успешно размещен!");
       } catch (error) {
         console.error("Error while placing order:", error);
-        alert("Ошибка при размещении заказа");
+        alert("Error while placing order");
       } */
       setCart([]);
       localStorage.removeItem('cart');
-      alert("Заказ успешно размещен!");
+      alert("Your order was placed successfully!");
     }
   };
 
@@ -146,7 +146,7 @@ export function App() {
       </div>
       <div className={classes.cart}>
         <UiContainer
-          heading="Корзина"
+          heading="Cart"
           bottomBar={[
             <InputMask
               mask="+7 (999) 999-99-99"
@@ -155,14 +155,14 @@ export function App() {
             >
               <UiInput
                 error={numberError}
-                placeholder="Введите номер телефона"
+                placeholder="Enter your phone number"
               />
             </InputMask>,
-            <UiButton onClick={onOrder}>Заказать</UiButton>,
+            <UiButton onClick={onOrder}>Place order</UiButton>,
           ]}
         >
           {!cart.length ? (
-            <>Нет добавленных товаров</>
+            <>No goods added</>
           ) : (
             <div className={classes.cartItems}>
               {cart.map((item) => (
@@ -173,7 +173,7 @@ export function App() {
                 </div>
               ))}
               <div className={classes.cartItem}>
-                <span>Итого</span>
+                <span>Total</span>
                 <span className={classes.cartTotal}>
                   {cart.reduce(
                     (accumulator, currentValue) =>
@@ -201,7 +201,7 @@ export function App() {
                     undefined
                       ? [
                           <UiButton onClick={() => onAddToCart(item, 1)}>
-                            Купить
+                            Add to cart
                           </UiButton>,
                         ]
                       : [
@@ -237,7 +237,7 @@ export function App() {
                     </span>
                     <span>{item.description}</span>
                     <span className={classes.product__heading}>
-                      Цена: {item.price}
+                      Price: {item.price}
                     </span>
                   </div>
                 </UiContainer>
