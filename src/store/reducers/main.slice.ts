@@ -23,25 +23,25 @@ export const mainSlice = createSlice({
   name: "main",
   initialState,
   reducers: {
-    getReviews: (state) => {
+    setReviewsLoading: (state) => {
       state.reviewsLoading = true;
     },
-    getReviewsSuccess: (state, action) => {
+    setReviewsSuccess: (state, action) => {
       state.reviews = action.payload;
       state.reviewsLoading = false;
     },
-    getReviewsFailure: (state, action) => {
+    setReviewsFailure: (state, action) => {
       state.message = action.payload;
       state.reviewsLoading = false;
     },
     setGoodsLoading: (state) => {
       state.goodsLoading = true;
     },
-    getGoodsSuccess: (state, action) => {
+    setGoodsSuccess: (state, action) => {
       state.goods = action.payload;
       state.goodsLoading = false;
     },
-    getGoodsFailure: (state, action) => {
+    setGoodsFailure: (state, action) => {
       state.message = action.payload;
       state.goodsLoading = false;
     },
@@ -52,6 +52,6 @@ export const getGoods = createAction<GoodsAction>(
   'main/getGoods'
 );
 
-export const {getReviews, getReviewsSuccess, getReviewsFailure, setGoodsLoading, getGoodsFailure, getGoodsSuccess} = mainSlice.actions;
+export const {setReviewsLoading, setReviewsSuccess, setReviewsFailure, setGoodsLoading, setGoodsFailure, setGoodsSuccess} = mainSlice.actions;
 
 export default mainSlice.reducer;

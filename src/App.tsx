@@ -9,7 +9,51 @@ import InputMask from "react-input-mask";
 import image from "/vite.svg";
 import { getGoods } from "./store/reducers/main.slice";
 
+type addToCartProps = { amount: number } & (
+  | { itemIdx: number }
+  | { item: Good }
+);
+
 const maxAmount = 999999;
+const storedCart = JSON.parse(localStorage.getItem("cart") || "null");
+const storedNumber = localStorage.getItem("number");
+
+const storePhoneNumber = (number: string) => {
+  localStorage.setItem("number", number);
+};
+
+const storeCart = (cart: ShoppingItem[]) => {
+  localStorage.setItem("cart", JSON.stringify(cart));
+};
+
+const findCartItemIdx = (item: Good, cart: ShoppingItem[]) => {
+  return cart.findIndex((cartItem) => cartItem.id === item.asin);
+};
+
+const removeCartItem = (index: number, cart: ShoppingItem[]) => {
+  return cart.toSpliced(index, 1);
+};
+
+const decrementCartItem = (index: number, cart: ShoppingItem[]) => {
+  let updatedCart = [...cart];
+
+  updatedCart[index].amount -= 1;
+  if (updatedCart[index].amount <= 0) {
+    updatedCart = removeCartItem(index, cart);
+  }
+  return updatedCart;
+};
+
+const incrementCartItem = (
+  index: number,
+  cart: ShoppingItem[],
+  amount: number
+) => {
+  const updatedCart = [...cart];
+  if (amount === 1) updatedCart[index].amount += 1;
+  else updatedCart[index].amount = amount;
+  return updatedCart;
+};
 
 export function App() {
   const dispatch = useAppDispatch();
@@ -19,23 +63,16 @@ export function App() {
   const { goods, goodsLoading } = useAppSelector((state) => state.mainReducer);
 
   const [numberError, setNumberError] = useState<boolean>(false);
-
-  const savePhoneNumber = (number: string) => {
-    localStorage.setItem("number", number);
-  };
-
-  const saveCart = (cart: ShoppingItem[]) => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-  };
-
-  const localStorageCart = JSON.parse(localStorage.getItem("cart") || "null");
-  const localStorageNumber = localStorage.getItem("number");
-  const [cart, setCart] = useState<ShoppingItem[]>(localStorageCart || []);
-  const [number, setNumber] = useState<string>(localStorageNumber || "");
+  const [cart, setCart] = useState<ShoppingItem[]>(storedCart || []);
+  const [number, setNumber] = useState<string>(storedNumber || "");
 
   useEffect(() => {
-    savePhoneNumber(number);
+    storePhoneNumber(number);
   }, [number]);
+
+  useEffect(() => {
+    storeCart(cart);
+  }, [cart]);
 
   useEffect(() => {
     if (number && numberError === true && number.indexOf("_") === -1) {
@@ -43,67 +80,29 @@ export function App() {
     }
   }, [numberError, number]);
 
-  useEffect(() => {
-    saveCart(cart);
-  }, [cart]);
-
-  const onAddToCart = (item: Good, amount: number) => {
-    const existingItemIndex = cart.findIndex(
-      (cartItem) => cartItem.id === item.asin
-    );
-
-    if (amount === 0) {
-      const updatedCart = [...cart].splice(existingItemIndex, 1);
+  const onAddToCart = (props: addToCartProps) => {
+    // increment amount of existing item
+    if ("itemIdx" in props) {
+      const updatedCart = incrementCartItem(props.itemIdx, cart, props.amount);
       setCart(updatedCart);
-    }
-
-    if (existingItemIndex !== -1) {
-      const updatedCart = cart.map((cartItem, index) => {
-        if (index === existingItemIndex) {
-          return {
-            ...cartItem,
-            amount: amount === 1 ? cartItem.amount + 1 : amount,
-          };
-        }
-        return cartItem;
-      });
-
-      setCart(updatedCart);
-    } else {
+    } //add new item
+    else if ("item" in props) {
       setCart([
         ...cart,
         {
-          id: item.asin,
-          name: item.product_title,
-          price: Number(item?.product_price?.replace("$", "")),
-          amount,
+          id: props.item.asin,
+          name: props.item.product_title,
+          price: Number(props.item?.product_price?.replace("$", "")),
+          amount: props.amount,
         },
       ]);
-    }
-  };
-
-  const onRemoveFromCart = (item: Good) => {
-    const existingItemIndex = cart.findIndex(
-      (cartItem) => cartItem.id === item.asin
-    );
-
-    if (existingItemIndex !== -1) {
-      const updatedCart = [...cart];
-
-      updatedCart[existingItemIndex].amount--;
-
-      if (updatedCart[existingItemIndex].amount <= 0) {
-        updatedCart.splice(existingItemIndex, 1);
-      }
-
-      setCart(updatedCart);
     }
   };
 
   useEffect(() => {
     //dispatch(getReviews());
     dispatch(getGoods({ page: 1 }));
-  }, [dispatch]);
+  }, []);
 
   const onOrder = async function () {
     if (number.indexOf("_") !== -1 || !number) {
@@ -175,20 +174,26 @@ export function App() {
                   <span>{item.name}</span>
                   <span>${item.price}</span>
                   <span>x{item.amount}</span>
-                  <span>${(item.amount * item.price).toFixed(2)}</span>
+                  <span>
+                    $
+                    {Number.isInteger(item.price)
+                      ? item.amount * item.price
+                      : (item.amount * item.price).toFixed(2)}
+                  </span>
                 </div>
               ))}
               <div className={classes.cartItem}>
                 <span>Total</span>
                 <span className={classes.cartTotal}>
                   $
-                  {cart
-                    .reduce(
+                  {(() => {
+                    const total = cart.reduce(
                       (accumulator, currentValue) =>
                         accumulator + currentValue.price * currentValue.amount,
                       0
-                    )
-                    .toFixed(2)}
+                    );
+                    return Number.isInteger(total) ? total : total.toFixed(2);
+                  })()}
                 </span>
               </div>
             </div>
@@ -204,49 +209,57 @@ export function App() {
               goods.length &&
               goods.map((item) => (
                 <UiContainer
+                  key={item.asin}
                   theme="light"
-                  bottomBar={
-                    cart.find((cartItem) => cartItem.id === item.asin) ===
-                    undefined
-                      ? [
-                          <UiButton
-                            theme="light"
-                            onClick={() => onAddToCart(item, 1)}
-                          >
-                            Add to cart
-                          </UiButton>,
-                        ]
-                      : [
-                          <UiButton
-                            theme="light"
-                            onClick={() => onRemoveFromCart(item)}
-                          >
-                            -
-                          </UiButton>,
-                          <UiInput
-                            type="number"
-                            min={1}
-                            max={maxAmount}
-                            onKeyDown={(e) =>
-                              ["E", "e", "-", "+"].includes(e.key) &&
-                              e.preventDefault()
-                            }
-                            value={
-                              cart.find((cartItem) => cartItem.id === item.asin)
-                                ?.amount
-                            }
-                            onChange={(e) =>
-                              onAddToCart(item, Number(e.target.value))
-                            }
-                          />,
-                          <UiButton
-                            theme="light"
-                            onClick={() => onAddToCart(item, 1)}
-                          >
-                            +
-                          </UiButton>,
-                        ]
-                  }
+                  bottomBar={(() => {
+                    const itemIdx = findCartItemIdx(item, cart);
+                    // if item is new to the cart
+                    if (itemIdx === -1) {
+                      return [
+                        <UiButton
+                          theme="light"
+                          onClick={() => onAddToCart({ amount: 1, item })}
+                        >
+                          Add to cart
+                        </UiButton>,
+                      ];
+                    } // if item already exists in the cart
+                    else
+                      return [
+                        <UiButton
+                          theme="light"
+                          onClick={() =>
+                            setCart(decrementCartItem(itemIdx, cart))
+                          }
+                        >
+                          -
+                        </UiButton>,
+                        <UiInput
+                          type="number"
+                          min={1}
+                          max={maxAmount}
+                          onKeyDown={(e) =>
+                            ["E", "e", "-", "+"].includes(e.key) &&
+                            e.preventDefault()
+                          }
+                          value={cart[itemIdx].amount}
+                          onChange={(e) =>
+                            e.target.value === "0"
+                              ? setCart(removeCartItem(itemIdx, cart))
+                              : onAddToCart({
+                                  amount: Number(e.target.value),
+                                  itemIdx,
+                                })
+                          }
+                        />,
+                        <UiButton
+                          theme="light"
+                          onClick={() => onAddToCart({ amount: 1, itemIdx })}
+                        >
+                          +
+                        </UiButton>,
+                      ];
+                  })()}
                 >
                   <div className={classes.product__info}>
                     <div className={classes.product}>
