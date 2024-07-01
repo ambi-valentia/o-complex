@@ -162,6 +162,7 @@ export function App() {
                 placeholder="Enter your phone number"
               />
             </InputMask>,
+            <UiButton theme="flat" onClick={() => {setCart([])}}>Clear cart</UiButton>,
             <UiButton onClick={onOrder}>Place order</UiButton>,
           ]}
         >
@@ -217,7 +218,7 @@ export function App() {
                     if (itemIdx === -1) {
                       return [
                         <UiButton
-                          theme="light"
+                          theme="dark"
                           onClick={() => onAddToCart({ amount: 1, item })}
                         >
                           Add to cart
@@ -227,7 +228,7 @@ export function App() {
                     else
                       return [
                         <UiButton
-                          theme="light"
+                          theme="dark"
                           onClick={() =>
                             setCart(decrementCartItem(itemIdx, cart))
                           }
@@ -253,7 +254,7 @@ export function App() {
                           }
                         />,
                         <UiButton
-                          theme="light"
+                          theme="dark"
                           onClick={() => onAddToCart({ amount: 1, itemIdx })}
                         >
                           +

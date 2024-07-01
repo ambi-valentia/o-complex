@@ -2,7 +2,7 @@ import React, { ButtonHTMLAttributes, ReactNode } from "react";
 import classes from "./UiButton.module.scss";
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  theme?: "light" | "dark";
+  theme?: "light" | "dark" | "flat";
   disabled?: boolean;
   children?: ReactNode;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
@@ -10,7 +10,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 export function UiButton(props: ButtonProps) {
   const {
     children,
-    theme = "dark",
+    theme = "light",
     disabled = false,
     onClick,
     ...otherProps
@@ -18,7 +18,9 @@ export function UiButton(props: ButtonProps) {
 
   return (
     <button
-      className={`${classes.button} ${theme === 'light' ? classes.button_light : ''}`}
+      className={`${classes.button} ${
+        theme === "dark" ? classes.button_dark : ""
+      } ${theme === "flat" ? classes.button_flat : ""}`}
       disabled={disabled}
       type="button"
       onClick={onClick}

@@ -33,6 +33,12 @@
   }
 }
 
-.button_light {
+.button_dark {
   background-color: #fbd1f3;
+}
+
+.button_flat {
+  background-color: transparent;
+  color: white;
+  border: 2px solid white;
 }
