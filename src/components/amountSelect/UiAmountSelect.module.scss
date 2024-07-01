@@ -1,0 +1,14 @@
+.amount__wrapper {
+  width: fit-content;
+  max-width: 100%;
+
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  input {
+    min-width: 60px;
+  }
+}

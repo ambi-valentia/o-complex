@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import classes from "./App.module.scss";
 import { useAppDispatch, useAppSelector } from "./hooks/redux";
-import { UiInput, UiContainer, UiButton } from "./components";
+import { UiInput, UiContainer, UiButton, UiAmountSelect } from "./components";
 import { Good, ShoppingItem } from "./types/main";
 import InputMask from "react-input-mask";
 // import api from "./services/api.service";
@@ -162,7 +162,14 @@ export function App() {
                 placeholder="Enter your phone number"
               />
             </InputMask>,
-            <UiButton theme="flat" onClick={() => {setCart([])}}>Clear cart</UiButton>,
+            <UiButton
+              theme="flat"
+              onClick={() => {
+                setCart([]);
+              }}
+            >
+              Clear cart
+            </UiButton>,
             <UiButton onClick={onOrder}>Place order</UiButton>,
           ]}
         >
@@ -170,11 +177,28 @@ export function App() {
             <>No goods added</>
           ) : (
             <div className={classes.cartItems}>
-              {cart.map((item) => (
-                <div className={classes.cartItem}>
-                  <span>{item.name}</span>
+              {cart.map((item, itemIdx) => (
+                <div className={classes.cart__item}>
+                  <span className={classes.column__one}>{item.name}</span>
                   <span>${item.price}</span>
-                  <span>x{item.amount}</span>
+                  <span>
+                  <UiAmountSelect
+                          onMinus={() =>
+                            setCart(decrementCartItem(itemIdx, cart))
+                          }
+                          onPlus={() => onAddToCart({ amount: 1, itemIdx })}
+                          value={item.amount}
+                          max={maxAmount}
+                          onChange={(e) =>
+                            e.target.value === "0"
+                              ? setCart(removeCartItem(itemIdx, cart))
+                              : onAddToCart({
+                                  amount: Number(e.target.value),
+                                  itemIdx,
+                                })
+                          }
+                        />
+                  </span>
                   <span>
                     $
                     {Number.isInteger(item.price)
@@ -183,8 +207,8 @@ export function App() {
                   </span>
                 </div>
               ))}
-              <div className={classes.cartItem}>
-                <span>Total</span>
+              <div className={classes.cart__item}>
+                <span className={classes.column__one}>Total</span>
                 <span className={classes.cartTotal}>
                   $
                   {(() => {
@@ -227,23 +251,13 @@ export function App() {
                     } // if item already exists in the cart
                     else
                       return [
-                        <UiButton
-                          theme="dark"
-                          onClick={() =>
+                        <UiAmountSelect
+                          onMinus={() =>
                             setCart(decrementCartItem(itemIdx, cart))
                           }
-                        >
-                          -
-                        </UiButton>,
-                        <UiInput
-                          type="number"
-                          min={1}
-                          max={maxAmount}
-                          onKeyDown={(e) =>
-                            ["E", "e", "-", "+"].includes(e.key) &&
-                            e.preventDefault()
-                          }
+                          onPlus={() => onAddToCart({ amount: 1, itemIdx })}
                           value={cart[itemIdx].amount}
+                          max={maxAmount}
                           onChange={(e) =>
                             e.target.value === "0"
                               ? setCart(removeCartItem(itemIdx, cart))
@@ -253,12 +267,6 @@ export function App() {
                                 })
                           }
                         />,
-                        <UiButton
-                          theme="dark"
-                          onClick={() => onAddToCart({ amount: 1, itemIdx })}
-                        >
-                          +
-                        </UiButton>,
                       ];
                   })()}
                 >
