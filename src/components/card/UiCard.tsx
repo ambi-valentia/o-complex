@@ -1,6 +1,6 @@
-import classes from "./UiContainer.module.scss";
+import classes from "./UiCard.module.scss";
 
-interface UiContainerProps {
+interface UiCardProps {
   theme?: "light" | "dark";
   disabled?: boolean;
   heading?: string;
@@ -8,13 +8,13 @@ interface UiContainerProps {
   bottomBar?: JSX.Element[];
 }
 
-export function UiContainer({
+export function UiCard({
   disabled = false,
   theme = "dark",
   children,
   heading,
   bottomBar,
-}: UiContainerProps) {
+}: UiCardProps) {
   return (
     <div
       className={`${classes.container} ${

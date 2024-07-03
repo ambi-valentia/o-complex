@@ -1,11 +1,11 @@
 import { UiInput } from './input/UiInput';
-import { UiContainer } from './container/UiContainer';
+import { UiCard } from './card/UiCard';
 import { UiButton } from './button/UiButton';
 import { UiAmountSelect } from './amountSelect/UiAmountSelect';
 
 export {
+  UiCard,
   UiInput,
   UiButton,
-  UiContainer,
   UiAmountSelect,
 };

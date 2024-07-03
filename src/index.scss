@@ -1,0 +1,28 @@
+@import "reset.scss";
+
+#root {
+  width: 100dvw;
+  min-height: 100dvh;
+  margin: 0 auto;
+  text-align: center;
+}
+
+body,
+html,
+#root {
+  min-height: 100dvh;
+  min-width: 100dvw;
+}
+
+body {
+  font-family: Quicksand;
+  overflow-x: hidden;
+}
+
+* {
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: thin;
+}

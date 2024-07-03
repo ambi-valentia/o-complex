@@ -53,7 +53,15 @@
 }
 
 @media screen and (max-width: 599.98px) and (orientation: portrait) {
+  .container {
+    align-items: center;
+  }
   .content {
     overflow-y: hidden;
+    padding-bottom: 2px;
+  }
+  .bar {
+    flex-direction: column;
+    gap: 10px;
   }
 }

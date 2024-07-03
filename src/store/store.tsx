@@ -1,8 +1,6 @@
-import {
-  combineReducers,
-  configureStore,
-} from "@reduxjs/toolkit";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import mainReducer from "./reducers/main.slice";
+import cartReducer from "./reducers/cart.slice";
 import creareSagaMiddlware from "redux-saga";
 import { rootWatcher } from "./saga";
 
@@ -10,6 +8,7 @@ const sagaMiddleware = creareSagaMiddlware();
 
 const rootReducer = combineReducers({
   mainReducer,
+  cartReducer,
 });
 
 export const setupStore = () => {
@@ -19,6 +18,7 @@ export const setupStore = () => {
       getDefaultMiddleware({
         serializableCheck: {},
       }).concat(sagaMiddleware),
+    devTools: true,
   });
 
   sagaMiddleware.run(rootWatcher);
