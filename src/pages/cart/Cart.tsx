@@ -28,7 +28,7 @@ export function Cart() {
   const storedCart = getStoredCart();
 
   useEffect(() => {
-    if (storedCart.length) {
+    if (storedCart?.length) {
       dispatch(setCart(storedCart));
     }
   }, []);

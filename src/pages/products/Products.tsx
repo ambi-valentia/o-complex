@@ -41,7 +41,7 @@ export function Products() {
   useEffect(() => {
     //dispatch(getReviews());
     dispatch(getGoods({ page: 1 }));
-    if (storedCart.length) {
+    if (storedCart?.length) {
       dispatch(setCart(storedCart));
     }
   }, []);
