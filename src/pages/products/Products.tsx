@@ -124,8 +124,7 @@ export function Products() {
                     <div className={classes.product}>
                       <img
                         src={item.product_photo || image}
-                        width="281px"
-                        style={{ maxWidth: "281px", maxHeight: "500px" }}
+                        style={{ maxHeight: "500px", maxWidth: '100%' }}
                       />
                       <span className={classes.product__heading}>
                         {item.product_title}
