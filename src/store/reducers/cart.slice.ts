@@ -30,10 +30,13 @@ export const cartSlice = createSlice({
                 },
               ];
         },
-        incrementCartItem: (state, action: PayloadAction<{itemIdx: number, amount: number}>) => {
+        incrementCartItem: (state, action: PayloadAction<{itemIdx: number}>) => {
+            const {itemIdx} = action.payload;
+            state.cart[itemIdx].amount += 1;
+        },
+        setCartItem: (state, action: PayloadAction<{itemIdx: number, amount: number}>) => {
             const {itemIdx, amount} = action.payload;
-            if (amount === 1) state.cart[itemIdx].amount += 1;
-            else state.cart[itemIdx].amount = amount;
+            state.cart[itemIdx].amount = amount;
         },
         decrementCartItem: (state, action: PayloadAction<itemIdx>) => {
             state.cart[action.payload].amount -= 1;
@@ -47,6 +50,6 @@ export const cartSlice = createSlice({
     }
 });
 
-export const { setCart, addCartItem, incrementCartItem, decrementCartItem, removeCartItem } = cartSlice.actions;
+export const { setCart, addCartItem, incrementCartItem, setCartItem, decrementCartItem, removeCartItem } = cartSlice.actions;
 
 export default cartSlice.reducer;

@@ -18,6 +18,7 @@ import {
   incrementCartItem,
   removeCartItem,
   setCart,
+  setCartItem,
 } from "store/reducers/cart.slice";
 import { useNavigate } from "react-router-dom";
 import { getStoredCart, storeCart } from "pages/cart/lib/helper";
@@ -103,14 +104,14 @@ export function Products() {
                         <UiAmountSelect
                           onMinus={() => dispatch(decrementCartItem(itemIdx))}
                           onPlus={() =>
-                            dispatch(incrementCartItem({ amount: 1, itemIdx }))
+                            dispatch(incrementCartItem({ itemIdx }))
                           }
                           value={cart[itemIdx].amount}
                           onChange={(e) =>
-                            e.target.value === "0"
+                            e.target.value === "" || e.target.value === "0"
                               ? dispatch(removeCartItem(itemIdx))
                               : dispatch(
-                                  incrementCartItem({
+                                  setCartItem({
                                     amount: Number(e.target.value),
                                     itemIdx,
                                   })

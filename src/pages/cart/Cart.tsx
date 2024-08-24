@@ -8,6 +8,7 @@ import {
   incrementCartItem,
   removeCartItem,
   setCart,
+  setCartItem,
 } from "store/reducers/cart.slice";
 import { selectCart } from "store/selectors/cart.selector";
 import { getStoredCart, storeCart } from "./lib/helper";
@@ -119,15 +120,15 @@ export function Cart() {
                       onMinus={() => dispatch(decrementCartItem(itemIdx))}
                       onPlus={() =>
                         dispatch(
-                          incrementCartItem({ itemIdx: itemIdx, amount: 1 })
+                          incrementCartItem({ itemIdx })
                         )
                       }
                       value={item.amount}
                       onChange={(e) =>
-                        e.target.value === "0"
+                        e.target.value === "" || e.target.value === "0"
                           ? dispatch(removeCartItem(itemIdx))
                           : dispatch(
-                              incrementCartItem({
+                              setCartItem({
                                 amount: Number(e.target.value),
                                 itemIdx,
                               })

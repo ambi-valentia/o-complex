@@ -22,7 +22,7 @@ export function UiAmountSelect({
         type="number"
         min={1}
         onKeyDown={(e) =>
-          ["E", "e", "-", "+"].includes(e.key) && e.preventDefault()
+          ["E", "e", "-", "+", "."].includes(e.key) && e.preventDefault()
         }
         value={props.value}
         onChange={props.onChange}
