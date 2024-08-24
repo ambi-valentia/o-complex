@@ -1,5 +1,5 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
-import { Good, GoodsAction, Review } from "../../types/main";
+import { Good, GoodsReviewsAction, Review } from "../../types/main";
 import { reviews } from "../../mocks/reviews.mock";
 import { goods } from "../../mocks/goods.mock";
 
@@ -48,8 +48,12 @@ export const mainSlice = createSlice({
   },
 });
 
-export const getGoods = createAction<GoodsAction>(
+export const getGoods = createAction<GoodsReviewsAction>(
   'main/getGoods'
+);
+
+export const getReviews = createAction<GoodsReviewsAction>(
+  'main/getReviews'
 );
 
 export const {setReviewsLoading, setReviewsSuccess, setReviewsFailure, setGoodsLoading, setGoodsFailure, setGoodsSuccess} = mainSlice.actions;

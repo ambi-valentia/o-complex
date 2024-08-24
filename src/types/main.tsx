@@ -1,10 +1,14 @@
 export interface Review {
-  id: number;
-  text: string;
+  review_id: string;
+  review_title: string;
+  review_comment: string;
+  review_star_rating: string;
+  review_author: string;
+  review_author_avatar: string;
 }
 
 export interface ReviewsResponse {
-  reviews: Review[];
+  data: Review[];
 }
 
 export interface OrderResponse {
@@ -37,7 +41,7 @@ export interface Good {
   product_price: string;
 }
 
-export interface GoodsAction {
+export interface GoodsReviewsAction {
   page: number;
 }
 

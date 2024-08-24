@@ -3,10 +3,8 @@ import classes from "./Products.module.scss";
 import { useAppDispatch, useAppSelector } from "hooks/redux";
 import { UiCard, UiButton, UiAmountSelect } from "components";
 import { Good, ShoppingItem } from "types/main";
-// import api from "./services/api.service";
-// import { Routes } from "./api";
 import image from "/vite.svg";
-import { getGoods } from "store/reducers/main.slice";
+import { getGoods, getReviews } from "store/reducers/main.slice";
 import {
   selectGoods,
   selectGoodsLoading,
@@ -39,7 +37,7 @@ export function Products() {
   const storedCart = getStoredCart();
 
   useEffect(() => {
-    //dispatch(getReviews());
+    dispatch(getReviews({ page: 1 }));
     dispatch(getGoods({ page: 1 }));
     if (storedCart?.length) {
       dispatch(setCart(storedCart));
@@ -58,11 +56,19 @@ export function Products() {
       <div className={classes.reviews}>
         {Object.values(reviews).map((review) => (
           <div className={classes.review}>
-            <UiCard heading="Review" key={review.id}>
+            <UiCard
+              heading={
+                review.review_title.concat(
+                  " " + "★".repeat(Number(review.review_star_rating))
+                ) + "☆".repeat(5 - Number(review.review_star_rating))
+              }
+              bottomBar={[(<div>{review.review_author}</div>), (<img src={review.review_author_avatar} width={30} height={30}/>)]}
+              key={review.review_id}
+            >
               {reviewsLoading ? (
                 <>LOADING...</>
               ) : (
-                <div dangerouslySetInnerHTML={{ __html: review.text }} />
+                <div>{review.review_comment}</div>
               )}
             </UiCard>
           </div>
