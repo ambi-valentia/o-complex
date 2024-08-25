@@ -2,7 +2,7 @@
   min-height: calc(100dvh - 62px);
   min-width: 100dvw;
   padding: 1rem;
-  background-color: black;
+  background-color: var(--background-color);
   color: white;
 
   display: flex;

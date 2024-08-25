@@ -1,9 +1,10 @@
-import { createAction, createSlice } from "@reduxjs/toolkit";
-import { Good, GoodsReviewsAction, Review } from "../../types/main";
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Good, GoodsReviewsAction, Review, Theme } from "../../types/main";
 import { reviews } from "../../mocks/reviews.mock";
 import { goods } from "../../mocks/goods.mock";
 
 export interface MainState {
+  theme: Theme | null;
   reviews: Review[];
   reviewsLoading: boolean;
   goods: Good[];
@@ -12,6 +13,7 @@ export interface MainState {
 }
 
 const initialState: MainState = {
+  theme: null,
   reviews: reviews,
   reviewsLoading: false,
   goods: goods,
@@ -23,6 +25,14 @@ export const mainSlice = createSlice({
   name: "main",
   initialState,
   reducers: {
+    setTheme: (state, action: PayloadAction<Theme>) => {
+      state.theme = action.payload;
+    },
+    toggleTheme: (state) => {
+      if(state.theme === 'light')
+        state.theme = 'dark' 
+      else state.theme = 'light';
+    },
     setReviewsLoading: (state) => {
       state.reviewsLoading = true;
     },
@@ -56,6 +66,7 @@ export const getReviews = createAction<GoodsReviewsAction>(
   'main/getReviews'
 );
 
-export const {setReviewsLoading, setReviewsSuccess, setReviewsFailure, setGoodsLoading, setGoodsFailure, setGoodsSuccess} = mainSlice.actions;
+export const {setTheme, toggleTheme, setReviewsLoading, setReviewsSuccess, 
+  setReviewsFailure, setGoodsLoading, setGoodsFailure, setGoodsSuccess} = mainSlice.actions;
 
 export default mainSlice.reducer;

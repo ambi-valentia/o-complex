@@ -1,16 +1,21 @@
 .header {
   width: 100%;
   height: 62px;
-  background-color: black;
-  border-bottom: 1px solid grey;
-  padding-right: 50px;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--header-border-color);
+  padding: 5px 20px 5px 10px;
 
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
 
   position: sticky;
   top: 0;
+}
+
+.buttons {
+  display: flex;
+  justify-items: flex-end;
 }
 
 .cart {

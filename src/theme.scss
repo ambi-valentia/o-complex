@@ -1,0 +1,39 @@
+:root {
+  --background-color: #404040;
+
+  --header-border-color: grey;
+
+  --button-fill-color: white;
+  --button-hover-color: #fe82c0;
+  --button-border-color: white;
+  --button-text-color: black;
+  --button-text-hover-color: #fbd1f3;
+
+  --icon-fill-color: white;
+  --icon-hover-color: #fbd1f3;
+
+  --text-color: white;
+  --font-weight: 400;
+
+  --card-background-color: #343434;
+}
+
+[data-theme="light"] {
+  --background-color: white;
+
+  --header-border-color: #d7d5cf;
+
+  --button-fill-color: #fe82c0;
+  --button-hover-color: #fe82c0;
+  --button-border-color: #fe82c0;
+  --button-text-color: white;
+  --button-text-hover-color: black;
+
+  --text-color: black;
+  --font-weight: 500;
+
+  --icon-fill-color: #81a1ff;
+  --icon-hover-color: #1e7cff;
+
+  --card-background-color: white;
+}

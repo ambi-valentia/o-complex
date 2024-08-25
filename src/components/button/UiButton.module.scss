@@ -11,13 +11,14 @@
   gap: 1rem;
 
   border: none;
-  background-color: white;
+  color: var(--button-text-color);
+  background-color: var(--button-fill-color);
 
   font: 500 16px / 18px Quicksand;
 
   &:hover {
     color: white;
-    background-color: #fe82c0;
+    background-color: var(--button-hover-color);
   }
 
   &:active {
@@ -33,23 +34,38 @@
 }
 
 .button_dark {
+  color: black;
   background-color: #fbd1f3;
 }
 
 .button_flat {
   background-color: transparent;
-  color: white;
-  border: 2px solid white;
+  color: var(--button-border-color);
+  border: 2px solid var(--button-border-color);
+
+  &:hover {
+    background-color: var(--button-hover-color);
+  }
 }
 
 .button_clear {
   background-color: transparent;
   border: none;
-  color: white;
-  fill: white;
+  color: var(--icon-fill-color);
+  fill: var(--icon-fill-color);
 
   &:hover {
     background-color: transparent;
+    fill: var(--icon-hover-color);
+    color: var(--icon-hover-color);
+  }
+}
+
+.button_clear_dark {
+  color: #fe82c0;
+  fill: #fe82c0;
+
+  &:hover {
     fill: #fbd1f3;
     color: #fbd1f3;
   }

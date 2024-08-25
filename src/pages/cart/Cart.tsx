@@ -12,7 +12,6 @@ import {
 } from "store/reducers/cart.slice";
 import { selectCart } from "store/selectors/cart.selector";
 import { getStoredCart, storeCart } from "./lib/helper";
-import { useNavigate } from "react-router-dom";
 
 const storedNumber = localStorage.getItem("number");
 
@@ -21,7 +20,6 @@ const storePhoneNumber = (number: string) => {
 };
 
 export function Cart() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const cart = useAppSelector(selectCart);
   const [number, setNumber] = useState<string>(storedNumber || "");
@@ -78,90 +76,83 @@ export function Cart() {
   };
 
   return (
-    <>
-      <UiButton onClick={() => navigate("/o-complex")}>Products</UiButton>
-      <div className={classes.cart}>
-        <UiCard
-          heading="Cart"
-          bottomBar={[
-            <InputMask
-              mask="+7 (999) 999-99-99"
-              value={number}
-              onChange={(e) => setNumber(e.target.value)}
+    <div className={classes.cart}>
+      <UiCard
+        heading="Cart"
+        bottomBar={[
+          <InputMask
+            mask="+7 (999) 999-99-99"
+            value={number}
+            onChange={(e) => setNumber(e.target.value)}
+          >
+            <UiInput
+              error={numberError}
+              placeholder="Enter your phone number"
+            />
+          </InputMask>,
+          <div className={classes.buttons__wrapper}>
+            <UiButton
+              theme="flat"
+              onClick={() => {
+                dispatch(setCart([]));
+              }}
             >
-              <UiInput
-                error={numberError}
-                placeholder="Enter your phone number"
-              />
-            </InputMask>,
-            <div className={classes.buttons__wrapper}>
-              <UiButton
-                theme="flat"
-                onClick={() => {
-                  dispatch(setCart([]));
-                }}
-              >
-                Clear cart
-              </UiButton>
-              <UiButton onClick={onOrder}>Place order</UiButton>
-            </div>,
-          ]}
-        >
-          {!cart.length ? (
-            <>No goods added</>
-          ) : (
-            <div className={classes.cartItems}>
-              {cart.map((item, itemIdx) => (
-                <div className={classes.cart__item}>
-                  <span className={classes.column__one}>{item.name}</span>
-                  <span>${item.price}</span>
-                  <span className={classes.amount__wrapper}>
-                    <UiAmountSelect
-                      onMinus={() => dispatch(decrementCartItem(itemIdx))}
-                      onPlus={() =>
-                        dispatch(
-                          incrementCartItem({ itemIdx })
-                        )
-                      }
-                      value={item.amount}
-                      onChange={(e) =>
-                        e.target.value === "" || e.target.value === "0"
-                          ? dispatch(removeCartItem(itemIdx))
-                          : dispatch(
-                              setCartItem({
-                                amount: Number(e.target.value),
-                                itemIdx,
-                              })
-                            )
-                      }
-                    />
-                  </span>
-                  <span>
-                    $
-                    {Number.isInteger(item.price)
-                      ? item.amount * item.price
-                      : (item.amount * item.price).toFixed(2)}
-                  </span>
-                </div>
-              ))}
+              Clear cart
+            </UiButton>
+            <UiButton onClick={onOrder}>Place order</UiButton>
+          </div>,
+        ]}
+      >
+        {!cart.length ? (
+          <>No goods added</>
+        ) : (
+          <div className={classes.cartItems}>
+            {cart.map((item, itemIdx) => (
               <div className={classes.cart__item}>
-                <span className={classes.column__one}>Total</span>
-                <span className={classes.cartTotal}>
+                <span className={classes.column__one}>{item.name}</span>
+                <span>${item.price}</span>
+                <span className={classes.amount__wrapper}>
+                  <UiAmountSelect
+                    onMinus={() => dispatch(decrementCartItem(itemIdx))}
+                    onPlus={() => dispatch(incrementCartItem({ itemIdx }))}
+                    value={item.amount}
+                    onChange={(e) =>
+                      e.target.value === "" || e.target.value === "0"
+                        ? dispatch(removeCartItem(itemIdx))
+                        : dispatch(
+                            setCartItem({
+                              amount: Number(e.target.value),
+                              itemIdx,
+                            })
+                          )
+                    }
+                  />
+                </span>
+                <span>
                   $
-                  {(() => {
-                    const total = cart.reduce(
-                      (accumulator, currentValue) =>
-                        accumulator + currentValue.price * currentValue.amount,
-                      0
-                    );
-                    return Number.isInteger(total) ? total : total.toFixed(2);
-                  })()}
+                  {Number.isInteger(item.price)
+                    ? item.amount * item.price
+                    : (item.amount * item.price).toFixed(2)}
                 </span>
               </div>
+            ))}
+            <div className={classes.cart__item}>
+              <span className={classes.column__one}>Total</span>
+              <span className={classes.cartTotal}>
+                $
+                {(() => {
+                  const total = cart.reduce(
+                    (accumulator, currentValue) =>
+                      accumulator + currentValue.price * currentValue.amount,
+                    0
+                  );
+                  return Number.isInteger(total) ? total : total.toFixed(2);
+                })()}
+              </span>
             </div>
-          )}
-        </UiCard>
-      </div>
-    </>
+          </div>
+        )}
+      </UiCard>
+    </div>
   );
 }

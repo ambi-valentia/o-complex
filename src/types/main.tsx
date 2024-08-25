@@ -1,3 +1,5 @@
+export type Theme = 'dark' | 'light';
+
 export interface Review {
   review_id: string;
   review_title: string;
