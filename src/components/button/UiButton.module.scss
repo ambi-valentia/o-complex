@@ -41,3 +41,16 @@
   color: white;
   border: 2px solid white;
 }
+
+.button_clear {
+  background-color: transparent;
+  border: none;
+  color: white;
+  fill: white;
+
+  &:hover {
+    background-color: transparent;
+    fill: #fbd1f3;
+    color: #fbd1f3;
+  }
+}

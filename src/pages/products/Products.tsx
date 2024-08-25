@@ -20,7 +20,6 @@ import {
   setCart,
   setCartItem,
 } from "store/reducers/cart.slice";
-import { useNavigate } from "react-router-dom";
 import { getStoredCart, storeCart } from "pages/cart/lib/helper";
 
 const findCartItemIdx = (item: Good, cart: ShoppingItem[]) => {
@@ -28,7 +27,6 @@ const findCartItemIdx = (item: Good, cart: ShoppingItem[]) => {
 };
 
 export function Products() {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const reviews = useAppSelector(selectReviews);
   const reviewsLoading = useAppSelector(selectReviewsLoading);
@@ -39,7 +37,7 @@ export function Products() {
 
   useEffect(() => {
     dispatch(getReviews({ page: 1 }));
-    dispatch(getGoods({ page: 1 }));
+    dispatch(getGoods({ page: 1 })); 
     if (storedCart?.length) {
       dispatch(setCart(storedCart));
     }
@@ -51,19 +49,31 @@ export function Products() {
 
   return (
     <>
-      <UiButton theme="light" onClick={() => navigate("cart")}>
-        Cart
-      </UiButton>
       <div className={classes.reviews}>
         {Object.values(reviews).map((review) => (
           <div className={classes.review}>
             <UiCard
               heading={
-                review.review_title.concat(
-                  " " + "★".repeat(Number(review.review_star_rating))
-                ) + "☆".repeat(5 - Number(review.review_star_rating))
+                reviewsLoading
+                  ? ""
+                  : review.review_title.concat(
+                      " " + "★".repeat(Number(review.review_star_rating))
+                    ) + "☆".repeat(5 - Number(review.review_star_rating))
               }
-              bottomBar={[(<div>{review.review_author}</div>), (<img src={review.review_author_avatar} width={30} height={30}/>)]}
+              bottomBar={[
+                reviewsLoading ? (
+                  <div />
+                ) : (
+                  <>
+                    <div>{review.review_author}</div>{" "}
+                    <img
+                      src={review.review_author_avatar}
+                      width={30}
+                      height={30}
+                    />
+                  </>
+                ),
+              ]}
               key={review.review_id}
             >
               {reviewsLoading ? (
@@ -125,7 +135,7 @@ export function Products() {
                     <div className={classes.product}>
                       <img
                         src={item.product_photo || image}
-                        style={{ maxHeight: "500px", maxWidth: '100%' }}
+                        style={{ maxHeight: "500px", maxWidth: "100%" }}
                       />
                       <span className={classes.product__heading}>
                         {item.product_title}
