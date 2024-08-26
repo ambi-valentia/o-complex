@@ -3,19 +3,19 @@ import { call, put, takeEvery, all } from "redux-saga/effects";
 import { setGoodsFailure, setGoodsLoading, setGoodsSuccess, setReviewsFailure, setReviewsLoading, setReviewsSuccess } from "./reducers/main.slice";
 import { fetchGoods, fetchReviews } from "../api";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { GoodsReviewsAction } from "../types/main";
+import { GoodsAction, ReviewsAction } from "../types/main";
 
-function* getReviewsFetch(action: PayloadAction<GoodsReviewsAction>): any {
+function* getReviewsFetch(action: PayloadAction<ReviewsAction>): any {
   yield put(setReviewsLoading());
   try {
-    const reviews = yield call(fetchReviews, action.payload.page);
+    const reviews = yield call(fetchReviews, {page: action.payload.page, asin: action.payload.asin});
     yield put(setReviewsSuccess(reviews.data.reviews));
   } catch (e) {
     yield put(setReviewsFailure(e));
   }
 }
 
-function* getGoodsFetch(action: PayloadAction<GoodsReviewsAction>): any {
+function* getGoodsFetch(action: PayloadAction<GoodsAction>): any {
   yield put(setGoodsLoading());
   try {
     const goods = yield call(fetchGoods, action.payload.page);

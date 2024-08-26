@@ -43,8 +43,12 @@ export interface Good {
   product_price: string;
 }
 
-export interface GoodsReviewsAction {
+export interface GoodsAction {
   page: number;
+}
+
+export interface ReviewsAction extends GoodsAction {
+  asin: string;
 }
 
 export interface GoodsResponse {

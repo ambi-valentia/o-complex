@@ -1,16 +1,9 @@
 import { useEffect } from "react";
 import classes from "./Products.module.scss";
-import { useAppDispatch, useAppSelector } from "hooks/redux";
 import { UiCard, UiButton, UiAmountSelect } from "components";
 import { Good, ShoppingItem } from "types/main";
 import image from "/vite.svg";
-import { getGoods, getReviews } from "store/reducers/main.slice";
-import {
-  selectGoods,
-  selectGoodsLoading,
-  selectReviews,
-  selectReviewsLoading,
-} from "store/selectors/main.selector";
+import { selectGoods, selectGoodsLoading } from "store/selectors/main.selector";
 import { selectCart } from "store/selectors/cart.selector";
 import {
   addCartItem,
@@ -21,22 +14,25 @@ import {
   setCartItem,
 } from "store/reducers/cart.slice";
 import { getStoredCart, storeCart } from "pages/cart/lib/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { Paths } from "constants/routes";
+import { useNavigate } from "react-router-dom";
+import { getGoods } from "store/reducers/main.slice";
 
 const findCartItemIdx = (item: Good, cart: ShoppingItem[]) => {
   return cart.findIndex((cartItem) => cartItem.id === item.asin);
 };
 
 export function Products() {
-  const dispatch = useAppDispatch();
-  const reviews = useAppSelector(selectReviews);
-  const reviewsLoading = useAppSelector(selectReviewsLoading);
-  const goods = useAppSelector(selectGoods);
-  const goodsLoading = useAppSelector(selectGoodsLoading);
-  const cart = useAppSelector(selectCart);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const goods = useSelector(selectGoods);
+  const goodsLoading = useSelector(selectGoodsLoading);
+  const cart = useSelector(selectCart);
   const storedCart = getStoredCart();
 
   useEffect(() => {
-    dispatch(getReviews({ page: 1 }));
     dispatch(getGoods({ page: 1 })); 
     if (storedCart?.length) {
       dispatch(setCart(storedCart));
@@ -48,109 +44,71 @@ export function Products() {
   }, [cart]);
 
   return (
-    <>
-      <div className={classes.reviews}>
-        {Object.values(reviews).map((review) => (
-          <div className={classes.review}>
-            <UiCard
-              heading={
-                reviewsLoading
-                  ? ""
-                  : review.review_title.concat(
-                      " " + "★".repeat(Number(review.review_star_rating))
-                    ) + "☆".repeat(5 - Number(review.review_star_rating))
-              }
-              bottomBar={[
-                reviewsLoading ? (
-                  <div />
-                ) : (
-                  <>
-                    <div>{review.review_author}</div>{" "}
+    <div className={classes.items}>
+      {goodsLoading ? (
+        <>GOODS LOADING...</>
+      ) : (
+        <>
+          {goods &&
+            goods.length &&
+            goods.map((item) => (
+              <UiCard
+                key={item.asin}
+                theme="light"
+                bottomBar={(() => {
+                  const itemIdx = findCartItemIdx(item, cart);
+                  // if item is new to the cart
+                  if (itemIdx === -1) {
+                    return [
+                      <UiButton
+                        theme="dark"
+                        onClick={() => dispatch(addCartItem(item))}
+                      >
+                        Add to cart
+                      </UiButton>,
+                    ];
+                  } // if item already exists in the cart
+                  else
+                    return [
+                      <UiAmountSelect
+                        onMinus={() => dispatch(decrementCartItem(itemIdx))}
+                        onPlus={() => dispatch(incrementCartItem({ itemIdx }))}
+                        value={cart[itemIdx].amount}
+                        onChange={(e) =>
+                          e.target.value === "" || e.target.value === "0"
+                            ? dispatch(removeCartItem(itemIdx))
+                            : dispatch(
+                                setCartItem({
+                                  amount: Number(e.target.value),
+                                  itemIdx,
+                                })
+                              )
+                        }
+                      />,
+                    ];
+                })()}
+              >
+                <div className={classes.product__info} onClick={() =>
+                      navigate(`/${Paths.Products}/reviews/${item?.asin}`)
+                    }>
+                  <div className={classes.product}>
                     <img
-                      src={review.review_author_avatar}
-                      width={30}
-                      height={30}
+                      src={item.product_photo || image}
+                      style={{ maxHeight: "500px", maxWidth: "100%" }}
                     />
-                  </>
-                ),
-              ]}
-              key={review.review_id}
-            >
-              {reviewsLoading ? (
-                <>LOADING...</>
-              ) : (
-                <div>{review.review_comment}</div>
-              )}
-            </UiCard>
-          </div>
-        ))}
-      </div>
-      <div className={classes.items}>
-        {goodsLoading ? (
-          <>GOODS LOADING...</>
-        ) : (
-          <>
-            {goods &&
-              goods.length &&
-              goods.map((item) => (
-                <UiCard
-                  key={item.asin}
-                  theme="light"
-                  bottomBar={(() => {
-                    const itemIdx = findCartItemIdx(item, cart);
-                    // if item is new to the cart
-                    if (itemIdx === -1) {
-                      return [
-                        <UiButton
-                          theme="dark"
-                          onClick={() => dispatch(addCartItem(item))}
-                        >
-                          Add to cart
-                        </UiButton>,
-                      ];
-                    } // if item already exists in the cart
-                    else
-                      return [
-                        <UiAmountSelect
-                          onMinus={() => dispatch(decrementCartItem(itemIdx))}
-                          onPlus={() =>
-                            dispatch(incrementCartItem({ itemIdx }))
-                          }
-                          value={cart[itemIdx].amount}
-                          onChange={(e) =>
-                            e.target.value === "" || e.target.value === "0"
-                              ? dispatch(removeCartItem(itemIdx))
-                              : dispatch(
-                                  setCartItem({
-                                    amount: Number(e.target.value),
-                                    itemIdx,
-                                  })
-                                )
-                          }
-                        />,
-                      ];
-                  })()}
-                >
-                  <div className={classes.product__info}>
-                    <div className={classes.product}>
-                      <img
-                        src={item.product_photo || image}
-                        style={{ maxHeight: "500px", maxWidth: "100%" }}
-                      />
-                      <span className={classes.product__heading}>
-                        {item.product_title}
-                      </span>
-                    </div>
                     <span className={classes.product__heading}>
-                      Price: {item.product_price}
+                      {item.product_title}
                     </span>
                   </div>
-                </UiCard>
-              ))}
-          </>
-        )}
-        {!goodsLoading && !goods?.length && <>No goods</>}
-      </div>
-    </>
+                  <span className={classes.product__heading}>
+                    Price: {item.product_price}
+                  </span>
+                </div>
+              </UiCard>
+            ))}
+        </>
+      )}
+      {!goodsLoading && !goods?.length && <>No goods</>}
+    </div>
   );
 }

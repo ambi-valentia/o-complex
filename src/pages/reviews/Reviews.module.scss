@@ -1,0 +1,33 @@
+.reviews {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 80px;
+
+  @media screen and (max-width: 1024.98px) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  @media screen and (max-width: 599.98px) and (orientation: portrait) {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.review {
+  width: 468px;
+  max-height: 600px;
+
+  @media screen and (max-width: 1024.98px) {
+    width: auto;
+    max-width: 700px;
+    min-height: 180px;
+  }
+
+  @media screen and (max-width: 599.98px) and (orientation: portrait) {
+    max-width: 400px;
+    max-height: unset;
+  }
+}

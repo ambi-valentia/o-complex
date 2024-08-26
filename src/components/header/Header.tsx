@@ -10,6 +10,7 @@ import { setTheme } from "store/reducers/main.slice";
 import { Theme } from "types/main";
 import { useTheme } from "hooks/useTheme";
 import { useEffect } from "react";
+import { Paths } from "constants/routes";
 
 export function Header() {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ export function Header() {
       <UiButton
         theme="clear"
         className={classes.cart}
-        onClick={() => navigate("o-complex")}
+        onClick={() => navigate(Paths.Products)}
       >
         <Vite />
         <div>Home</div>
@@ -46,7 +47,7 @@ export function Header() {
         <UiButton
           theme="clear"
           className={classes.cart}
-          onClick={() => navigate("o-complex/cart")}
+          onClick={() => navigate(Paths.Cart)}
         >
           <Cart />
           <div>Cart</div>
