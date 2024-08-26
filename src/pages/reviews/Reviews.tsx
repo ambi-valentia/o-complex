@@ -16,7 +16,7 @@ export function Reviews() {
   const reviewsLoading = useSelector(selectReviewsLoading);
 
   useEffect(() => {
-    dispatch(getReviews({ page: 1, asin: id }));
+    dispatch(getReviews({ page: 1, asin: id || 'B07ZPKN6YR' }));
   }, []);
 
   return (

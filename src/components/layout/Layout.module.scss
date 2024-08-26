@@ -2,6 +2,7 @@
   min-height: calc(100dvh - 62px);
   min-width: 100dvw;
   padding: 1rem;
+  padding-right: 2rem;
   background-color: var(--background-color);
   color: white;
 
@@ -10,4 +11,8 @@
   align-items: center;
 
   gap: 100px;
+
+  @media screen and (max-width: 1024.98px) {
+    padding-right: unset;
+  }
 }

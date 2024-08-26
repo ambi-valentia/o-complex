@@ -1,5 +1,5 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Good, GoodsReviewsAction, Review, Theme } from "../../types/main";
+import { Good, GoodsAction, Review, ReviewsAction, Theme } from "../../types/main";
 import { reviews } from "../../mocks/reviews.mock";
 import { goods } from "../../mocks/goods.mock";
 
@@ -58,11 +58,11 @@ export const mainSlice = createSlice({
   },
 });
 
-export const getGoods = createAction<GoodsReviewsAction>(
+export const getGoods = createAction<GoodsAction>(
   'main/getGoods'
 );
 
-export const getReviews = createAction<GoodsReviewsAction>(
+export const getReviews = createAction<ReviewsAction>(
   'main/getReviews'
 );
 
