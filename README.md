@@ -1,4 +1,4 @@
-# A mobile friendly marketplce web app written in React+Typescript
+# A mobile friendly marketpalce web app written in React
 
 Contents:
 - Products-reviews page
@@ -11,13 +11,11 @@ Features:
 - Phone number field is masked
 - Field validation
 
-  ![image](https://github.com/user-attachments/assets/444eae8d-d76c-478c-8491-ce27e7ba6dfd)
-  ![image](https://github.com/user-attachments/assets/5c9dc759-5beb-4096-a3a5-458ad929ac16)
-  ![image](https://github.com/user-attachments/assets/b59229de-1ff8-44ff-af87-9edbf72b5bd3)
+![Screenshot 2024-08-27 213023](https://github.com/user-attachments/assets/a569743a-2ecc-4b1f-a8d8-1b2a6b2709f4)
+![Screenshot 2024-08-27 213118](https://github.com/user-attachments/assets/4fe42982-a9bf-43f1-970e-bf8a193b956b)
+![Screenshot 2024-08-27 220206](https://github.com/user-attachments/assets/3bd85c9a-0fe0-4b57-900a-5048256c3942)
+![Screenshot 2024-08-27 213059](https://github.com/user-attachments/assets/039d4d24-b0fb-4fdf-82ed-73374d449c25)
 
-
-
-  
 ```install
 npm install
 ```
