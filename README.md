@@ -1,6 +1,6 @@
 # A mobile friendly marketpalce web app
 
-Take a look at products from real up-to-date Amazon data and check out user reviews: https://ambi-valentia.github.io/o-complex/ 
+Take a look at products from real-time Amazon data and check out user reviews: https://ambi-valentia.github.io/o-complex/ 
 
 Contents:
 - Products-reviews page
@@ -9,7 +9,7 @@ Contents:
 Features:
 - Two themes 
 - Mobile friendly
-- Data from Amazon's API
+- Real-time data from Amazon's API
 - Cart and phone number get memorized and appear after reload
 - Phone number field is masked
 - Field validation
