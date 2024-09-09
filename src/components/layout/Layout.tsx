@@ -11,7 +11,10 @@ const theme = localStorage.getItem("theme");
 export function Layout() {
   const dispatch = useDispatch();
   const storeTheme = useTheme();
-  if (storeTheme === null) dispatch(setTheme(theme as Theme));
+  if (storeTheme === null) {
+    if (theme) dispatch(setTheme(theme as Theme));
+    else dispatch(setTheme("light"));
+  }
 
   return (
     <>
