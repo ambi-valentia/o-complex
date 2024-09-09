@@ -1,6 +1,6 @@
 .products__container {
   display: grid;
-  max-width: 100%;
+  width: 100%;
 }
 
 .icons {
@@ -13,9 +13,11 @@
 }
 
 .items {
+  padding: 0 50px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-gap: 50px;
+  grid-row-gap: 50px;
+  justify-items: center;
   color: var(--text-color);
 
   & > div {
@@ -25,6 +27,7 @@
 }
 
 .items_more {
+  padding: 0 10px;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-gap: 0px;
   grid-row-gap: 10px;
@@ -87,6 +90,7 @@
   .items {
     display: flex;
     flex-direction: column;
+    align-items: center;
     & > div {
       max-height: max-content;
     }
