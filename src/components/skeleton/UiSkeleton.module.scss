@@ -1,0 +1,19 @@
+@keyframes shimmer {
+  0% {
+    background-position: -1000px -1000px;
+  }
+  100% {
+    background-position: 1000px 1000px;
+  }
+}
+
+.skeleton {
+  max-height: inherit;
+  max-width: inherit;
+  background: var(--skeleton-background);
+  background-size: 1000px 100%;
+}
+
+.skeleton_animated {
+  animation: shimmer 5s infinite linear;
+}

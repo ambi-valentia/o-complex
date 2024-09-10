@@ -2,7 +2,7 @@ import { UiButton } from "components";
 import Light from "assets/light.svg?react";
 import Dark from "assets/dark.svg?react";
 import Cart from "assets/cart.svg?react";
-import Vite from "../../../public/vite.svg?react";
+import Vite from "assets/vite.svg?react";
 import { useNavigate } from "react-router-dom";
 import classes from "./Header.module.scss";
 import { useDispatch } from "react-redux";

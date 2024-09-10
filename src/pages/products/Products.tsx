@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import classes from "./Products.module.scss";
-import { UiCard, UiButton, UiAmountSelect } from "components";
+import { UiCard, UiButton, UiAmountSelect, UiSkeleton } from "components";
 import { Good, ShoppingItem } from "types/main";
-import image from "/vite.svg";
+import image from "assets/vite.svg";
 import { selectGoods, selectGoodsLoading } from "store/selectors/main.selector";
 import { selectCart } from "store/selectors/cart.selector";
 import {
@@ -56,9 +56,15 @@ export function Products() {
           <MoreItems />
         </UiButton>
       </div>
-      <div className={`${classes.items} ${moreItems ? classes.items_more : ''}`}>
+      <div
+        className={`${classes.items} ${moreItems ? classes.items_more : ""}`}
+      >
         {goodsLoading ? (
-          <>GOODS LOADING...</>
+          <>
+          {Array.from({ length: 15 }, (_, i) => (
+            <UiSkeleton key={i} width="95%" height={moreItems ? "300px" : "600px"} />
+          ))}
+        </>
         ) : (
           <>
             {goods &&
@@ -74,6 +80,7 @@ export function Products() {
                       return [
                         <UiButton
                           theme="dark"
+                          className={classes.addToCart}
                           onClick={() => dispatch(addCartItem(item))}
                         >
                           Add to cart
@@ -111,7 +118,11 @@ export function Products() {
                     <div className={classes.product}>
                       <img
                         src={item.product_photo || image}
-                        className={`${moreItems ? classes.product__image_small : classes.product__image}`}
+                        className={`${
+                          moreItems
+                            ? classes.product__image_small
+                            : classes.product__image
+                        }`}
                       />
                       <span className={classes.product__price}>
                         {item.product_price}

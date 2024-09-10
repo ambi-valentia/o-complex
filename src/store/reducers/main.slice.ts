@@ -36,7 +36,7 @@ export const mainSlice = createSlice({
     setReviewsLoading: (state) => {
       state.reviewsLoading = true;
     },
-    setReviewsSuccess: (state, action) => {
+    setReviewsSuccess: (state, action: PayloadAction<Review[]>) => {
       state.reviews = action.payload;
       state.reviewsLoading = false;
     },
@@ -47,7 +47,7 @@ export const mainSlice = createSlice({
     setGoodsLoading: (state) => {
       state.goodsLoading = true;
     },
-    setGoodsSuccess: (state, action) => {
+    setGoodsSuccess: (state, action: PayloadAction<Good[]>) => {
       state.goods = action.payload;
       state.goodsLoading = false;
     },
