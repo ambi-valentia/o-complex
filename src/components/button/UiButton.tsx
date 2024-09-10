@@ -24,7 +24,7 @@ export function UiButton(props: ButtonProps) {
         theme === "dark" ? classes.button_dark : ""
       } ${theme === "flat" ? classes.button_flat : ""} ${className || ""} ${
         theme === "clear" ? classes.button_clear : ""
-      } ${theme === "clearDark" ? classes.button_clear_dark : ""}`}
+      }`}
       disabled={disabled}
       type="button"
       onClick={onClick}

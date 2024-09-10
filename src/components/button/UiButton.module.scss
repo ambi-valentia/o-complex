@@ -18,7 +18,7 @@
 
   &:hover {
     color: white;
-    background-color: var(--button-hover-color);
+    background-color: var(--button-filled-hover-color);
   }
 
   &:active {
@@ -35,7 +35,11 @@
 
 .button_dark {
   color: black;
-  background-color: #fbd1f3;
+  background-color: #fbd1f3; 
+  
+  &:hover {
+    background-color: var(--button-hover-color);
+  }
 }
 
 .button_flat {
@@ -60,15 +64,5 @@
     background-color: transparent;
     fill: var(--icon-hover-color);
     color: var(--icon-hover-color);
-  }
-}
-
-.button_clear_dark {
-  color: #fe82c0;
-  fill: #fe82c0;
-
-  &:hover {
-    fill: #fbd1f3;
-    color: #fbd1f3;
   }
 }
